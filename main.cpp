@@ -1,10 +1,15 @@
 #include <SFML/Graphics.hpp>
-
+#include "world.hpp"
+#include "object.hpp"
+#include "world_init.hpp"
+#include "input.hpp"
+//main is for initialising the window and the game loop
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    World mainScene("DOOOOOOOOOOOOOOM BABY");
+
+    WorldInit::initWorld(&mainScene);
+    sf::RenderWindow window(sf::VideoMode(800, 600), mainScene.GetName());
 
     while (window.isOpen())
     {
@@ -16,7 +21,23 @@ int main()
         }
 
         window.clear();
-        window.draw(shape);
+
+        //input handling
+        CharacteInput::characterInput((Character*)mainScene.GetObject("doomGuy"));
+
+        // Draw the world here
+        std::vector<Object*> objects = mainScene.GetObjects();
+        for(Object* obj : objects)
+        {
+            sf::Sprite sprite = obj->GetSprite();
+            
+            sprite.setPosition(obj->GetX(), obj->GetY());
+            //sprite.setRotation(obj->GetRotation());
+            sprite.setScale(obj->GetScaleX(), obj->GetScaleY());
+            window.draw(sprite);
+
+        }
+
         window.display();
     }
 
