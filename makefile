@@ -1,6 +1,6 @@
 
 output: main.o c_render.o
-	g++ main.o c_render.o -o output
+	gcc main.o c_render.o -o output
 
 main.o: main.cpp 
 	g++ -c main.cpp
